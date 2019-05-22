@@ -45,6 +45,7 @@ services:
             - ./workspace:/home/node/app
         ports:
             - "4200:4200"
+            - "8080:8080"
         networks:
             - app-network
         tty: true
