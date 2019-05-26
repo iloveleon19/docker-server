@@ -15,7 +15,8 @@ RUN apk add --no-cache \
     libjpeg-turbo-dev
 
 # Install extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install mbstring exif pcntl
 RUN docker-php-ext-configure zip --with-libzip=/usr/include
 RUN docker-php-ext-install  zip
 RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
