@@ -9,7 +9,7 @@ services:
         working_dir: /var/www/html
         volumes:
             - ./php/conf.d:/usr/local/etc/php/conf.d
-            - ./workspace:/var/www/html
+            - ~/workspace:/var/www/html
         depends_on:
             - mysql_latest
         ports:
@@ -23,7 +23,7 @@ services:
         container_name: "nginx"
         restart: always
         volumes:
-            - ./workspace:/var/www/html
+            - ~/workspace:/var/www/html
             - ./nginx/conf.d/:/etc/nginx/conf.d
         depends_on:
             - php7
@@ -43,7 +43,7 @@ services:
         environment:
             - NODE_ENV=development
         volumes:
-            - ./workspace:/home/node/app
+            - ~/workspace:/home/node/app
         ports:
             - "4200:4200"
             - "8080:8080"
