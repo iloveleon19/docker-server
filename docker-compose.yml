@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-    php72:
+    php7:
         build: "php/"
         container_name: "php"
         user: "www-data"
@@ -26,7 +26,7 @@ services:
             - ~/workspace:/var/www/html
             - ./nginx/conf.d/:/etc/nginx/conf.d
         depends_on:
-            - php72
+            - php7
         ports:
             - "80:80"
             - "443:443"
