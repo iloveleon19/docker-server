@@ -1,9 +1,9 @@
 version: "3.7"
 
 services:
-    php7:
+    php:
         build: "php/"
-        container_name: "php"
+        container_name: "php_7.2-fpm"
         user: "www-data"
         restart: always
         working_dir: /var/www/html
@@ -11,22 +11,23 @@ services:
             - ./php/conf.d:/usr/local/etc/php/conf.d
             - ~/workspace:/var/www/html
         depends_on:
-            - mysql_latest
+            - mysql
+            - redis
         ports:
             - "9000:9000"
         networks:
             - app-network
         tty: true
 
-    nginx_stable:
+    nginx:
         build: "nginx/"
-        container_name: "nginx"
+        container_name: "nginx_1.6.0"
         restart: always
         volumes:
             - ~/workspace:/var/www/html
             - ./nginx/conf.d/:/etc/nginx/conf.d
         depends_on:
-            - php7
+            - php
         ports:
             - "80:80"
             - "443:443"
@@ -34,9 +35,9 @@ services:
             - app-network
         tty: true
 
-    node_lts:
-        build: "node/"
-        container_name: "node"
+    node:
+        build: "node"
+        container_name: "node_10.6.0"
         restart: always
         user: "node"
         working_dir: /home/node/app
@@ -47,14 +48,14 @@ services:
         ports:
             - "4200:4200"
             - "3000:3000"
-            - "8080:8080"
+            # - "8080:8080"
         networks:
             - app-network
         tty: true
 
-    mysql_latest:
+    mysql:
         build: "mysql/"
-        container_name: "mysql"
+        container_name: "mysql_5.7"
         command: --default-authentication-plugin=mysql_native_password
         command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
         restart: always
@@ -66,7 +67,7 @@ services:
             SERVICE_NAME: mysql
             SERVICE_TAGS: dev
         volumes:
-            - db-data:/var/lib/mysql
+            - mysql-data:/var/lib/mysql
         ports:
             - "3306:3306"
             - "33060:33060"
@@ -74,9 +75,40 @@ services:
             - app-network
         tty: true
 
+    golang:
+        build: "golang/"
+        container_name: "golang_1.12.7"
+        restart: always
+        working_dir: "/go/src/app"
+        user: "www-data"
+        volumes:
+            - ~/workspace:/go/src/app
+        ports: 
+            - "8080:8080"
+        networks:
+            - app-network
+        tty: true
+        depends_on:
+            - redis
+            - mysql
+        environment:
+            REDIS_URL: redis:6379
+
+    redis:
+        build: "redis/"
+        container_name: "redis_5.0.5"
+        restart: always
+        volumes:
+            - redis-data:/data
+        ports:
+            - "6379:6379"
+        networks:
+            - app-network
+
 networks:
     app-network:
         driver: bridge
 
 volumes:
-    db-data:
+    mysql-data:
+    redis-data:
