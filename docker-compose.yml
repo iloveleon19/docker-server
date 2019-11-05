@@ -28,6 +28,7 @@ services:
             - ./nginx/conf.d/:/etc/nginx/conf.d
         depends_on:
             - php
+            - vsftpd
         ports:
             - "80:80"
             - "443:443"
@@ -102,6 +103,31 @@ services:
             - redis-data:/data
         ports:
             - "6379:6379"
+        networks:
+            - app-network
+
+    vsftpd:
+        build:
+            context: ./vsftpd
+            dockerfile: ./Dockerfile
+            args:
+                USER_ID: 1000
+                GROUP_ID: 82
+        container_name: "fauria_vsftpd"
+        restart: always
+        environment:
+            FTP_USER: themes
+            FTP_PASS: secret
+            FILE_OPEN_MODE: 0002
+            LOCAL_UMASK: 002
+        ports:
+            - 0.0.0.0:20:20
+            - 0.0.0.0:21:21
+            - 21100-21110:21100-21110
+        volumes:
+            # - ./home:/home/vsftpd
+            # - ./logs:/var/log/vsftpd
+            - ~/workspace/wordpress/wp-content:/home/vsftpd
         networks:
             - app-network
 
