@@ -12,7 +12,7 @@ services:
             - ~/workspace:/var/www/html
         depends_on:
             - mysql
-            - redis
+            # - redis
         ports:
             - "9000:9000"
         networks:
@@ -36,23 +36,23 @@ services:
             - app-network
         tty: true
 
-    node:
-        build: "node"
-        container_name: "node_10.6.0"
-        restart: always
-        user: "node"
-        working_dir: /home/node/app
-        environment:
-            - NODE_ENV=development
-        volumes:
-            - ~/workspace:/home/node/app
-        ports:
-            - "4200:4200"
-            - "3000:3000"
-            # - "8080:8080"
-        networks:
-            - app-network
-        tty: true
+    # node:
+    #     build: "node"
+    #     container_name: "node_10.6.0"
+    #     restart: always
+    #     user: "node"
+    #     working_dir: /home/node/app
+    #     environment:
+    #         - NODE_ENV=development
+    #     volumes:
+    #         - ~/workspace:/home/node/app
+    #     ports:
+    #         - "4200:4200"
+    #         - "3000:3000"
+    #         # - "8080:8080"
+    #     networks:
+    #         - app-network
+    #     tty: true
 
     mysql:
         build: "mysql/"
@@ -98,35 +98,35 @@ services:
     #         - app-network
     #     tty: true
 
-    golang:
-        build: "golang/"
-        container_name: "golang_1.12.7"
-        restart: always
-        working_dir: "/go/src/app"
-        user: "www-data"
-        volumes:
-            - ~/workspace:/go/src/app
-        ports: 
-            - "8080:8080"
-        networks:
-            - app-network
-        tty: true
-        depends_on:
-            - redis
-            - mysql
-        environment:
-            REDIS_URL: redis:6379
+    # golang:
+    #     build: "golang/"
+    #     container_name: "golang_1.12.7"
+    #     restart: always
+    #     working_dir: "/go/src/app"
+    #     user: "www-data"
+    #     volumes:
+    #         - ~/workspace:/go/src/app
+    #     ports: 
+    #         - "8080:8080"
+    #     networks:
+    #         - app-network
+    #     tty: true
+    #     depends_on:
+    #         - redis
+    #         - mysql
+    #     environment:
+    #         REDIS_URL: redis:6379
 
-    redis:
-        build: "redis/"
-        container_name: "redis_5.0.5"
-        restart: always
-        volumes:
-            - redis-data:/data
-        ports:
-            - "6379:6379"
-        networks:
-            - app-network
+    # redis:
+    #     build: "redis/"
+    #     container_name: "redis_5.0.5"
+    #     restart: always
+    #     volumes:
+    #         - redis-data:/data
+    #     ports:
+    #         - "6379:6379"
+    #     networks:
+    #         - app-network
 
     # vsftpd:
     #     build:
@@ -161,4 +161,4 @@ networks:
 volumes:
     mysql-data:
     # mysql-data2:
-    redis-data:
+    # redis-data:

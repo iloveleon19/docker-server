@@ -1,3 +1,7 @@
 node_modules
 
 app*.conf
+laravel*.conf
+
+!app.conf
+!laravel.conf
