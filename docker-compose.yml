@@ -61,10 +61,10 @@ services:
         command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
         restart: always
         environment:
-            MYSQL_DATABASE: "homestead"
+            # MYSQL_DATABASE: "homestead"
+            # MYSQL_USER: "homestead"
+            # MYSQL_PASSWORD: "secret"
             MYSQL_ROOT_PASSWORD: "secret"
-            MYSQL_USER: "homestead"
-            MYSQL_PASSWORD: "secret"
             SERVICE_NAME: mysql
             SERVICE_TAGS: dev
         volumes:
@@ -75,28 +75,6 @@ services:
         networks:
             - app-network
         tty: true
-
-    # mysql2:
-    #     build: "mysql/"
-    #     container_name: "mysql_5.72"
-    #     command: --default-authentication-plugin=mysql_native_password
-    #     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
-    #     restart: always
-    #     environment:
-    #         MYSQL_DATABASE: "homestead2"
-    #         MYSQL_ROOT_PASSWORD: "secret"
-    #         MYSQL_USER: "homestead"
-    #         MYSQL_PASSWORD: "secret"
-    #         SERVICE_NAME: mysql
-    #         SERVICE_TAGS: dev
-    #     volumes:
-    #         - mysql-data2:/var/lib/mysql
-    #     ports:
-    #         - "3307:3306"
-    #         - "33070:33060"
-    #     networks:
-    #         - app-network
-    #     tty: true
 
     # golang:
     #     build: "golang/"
@@ -160,5 +138,4 @@ networks:
 
 volumes:
     mysql-data:
-    # mysql-data2:
     # redis-data:
